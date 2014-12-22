@@ -18,7 +18,7 @@ ServiceDiscovery
 ----------------
 
 ``init()``: Initialized the service discovery subsystem
-``inject_service(address)``: 
+``inject_service(address)``:
 ``get_service_address(service_name, provider=None)``
 ``get_all_service_addresses(service_name, provider=None)``
 
