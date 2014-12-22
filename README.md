@@ -16,7 +16,9 @@ to roll out you can use this service discovery interface to access them, and
 then create provider plugins for your favorite discovery system.
 
 It provides two main functions:
+
 1. A fixed interface for services to call as part of service discovery
+
 2. A plug and play provider system for providing #1
 
 Interface
