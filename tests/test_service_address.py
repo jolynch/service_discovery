@@ -1,5 +1,6 @@
 from service_discovery.service_address import ServiceAddress
 
+
 def test_contract():
     service_address = ServiceAddress('test_service', 'localhost', 1234)
     assert service_address.service_name == 'test_service'

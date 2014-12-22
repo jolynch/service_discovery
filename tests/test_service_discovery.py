@@ -3,9 +3,11 @@ from service_discovery.service_address import ServiceAddress
 from service_discovery.errors import ServiceDiscoveryError
 import pytest
 
+
 def test_init():
     # Ensure no errors are thrown
     ServiceDiscovery.init()
+
 
 def test_injection():
     mock_service = ServiceAddress('test_service', 'localhost', 1337, 'tests')
@@ -14,6 +16,7 @@ def test_injection():
     address = ServiceDiscovery.get_service_address('test_service')
     assert [mock_service] == addresses
     assert mock_service == address
+
 
 def test_errors():
     with pytest.raises(ServiceDiscoveryError):

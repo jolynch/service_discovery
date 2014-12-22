@@ -5,7 +5,7 @@ from service_discovery.service_address import ServiceAddress
 def test_injection_map():
     mock_environment = {
         'SERVICE_INJECT_MAP':
-            'test_service?test_host:12%test_service2?localhost:1337'
+        'test_service?test_host:12%test_service2?localhost:1337'
     }
 
     env_services = EnvServiceProvider(env=mock_environment)
@@ -24,7 +24,6 @@ def test_service_override():
 
     env_services = EnvServiceProvider(env=mock_environment)
     assert len(env_services.provide_all_service_addresses('no_service')) == 0
-
 
     new_mock_environment = {
         'SERVICE_INJECT_MAP': 'test_service?test_host:17',

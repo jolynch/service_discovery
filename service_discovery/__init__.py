@@ -1,1 +1,1 @@
-from .service_discovery import ServiceDiscovery
+from .service_discovery import ServiceDiscovery # flake8: noqa

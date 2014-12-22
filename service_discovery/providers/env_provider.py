@@ -2,7 +2,6 @@
 from __future__ import print_function, absolute_import, division
 from service_discovery.providers.base_provider import BaseServiceProvider
 from service_discovery.service_address import ServiceAddress
-from service_discovery.errors import ServiceDiscoveryError
 import os
 
 
@@ -36,22 +35,19 @@ class EnvServiceProvider(BaseServiceProvider):
                 )
                 self.services[service_name] = addrs
 
-
     @staticmethod
     def __parse_service_injection(service_name, service_host_ports):
         if service_host_ports:
             return [
                 ServiceAddress.from_host_port(
-                    service_name, host_port, provenance = __name__
+                    service_name, host_port, provenance=__name__
                 ) for host_port in service_host_ports.split(',')
             ]
         return []
 
-
     def inject(self, service_address):
         self.services[service_address.service_name] = [service_address]
         return True
-
 
     def provide_all_service_addresses(self, service_name):
         service_addresses = self.services.get(service_name)
@@ -64,7 +60,6 @@ class EnvServiceProvider(BaseServiceProvider):
             )
             self.services[service_name] = service_addresses
         return service_addresses
-
 
     def provide_service_address(self, service_name):
         service_addresses = self.provide_all_service_addresses(service_name)
