@@ -8,8 +8,9 @@ production:
 tests: test
 
 test:
-	python -m pytest tests
+	tox
 
 clean:
+	rm -rf service_discovery.egg-info
 	find . -name '*.pyc' -delete
 	find . -name '__pycache__' -delete
