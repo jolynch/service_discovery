@@ -16,8 +16,8 @@ to roll out you can use this service discovery interface to access them, and
 then create provider plugins for your favorite discovery system.
 
 It provides two main functions:
-1) A fixed interface for services to call as part of service discovery
-2) A plug and play provider system for providing #1
+1. A fixed interface for services to call as part of service discovery
+2. A plug and play provider system for providing #1
 
 Interface
 ---------
@@ -29,15 +29,21 @@ ServiceDiscovery
 ----------------
 
 ``init()``: Initialized the service discovery subsystem
+
 ``inject_service(address)``:
+
 ``get_service_address(service_name)``
+
 ``get_all_service_addresses(service_name)``
 
 ServiceAddress
 --------------
 ``service_name``
+
 ``host``
+
 ``port``
+
 ``get_host_port``
 
 ServiceProvider
