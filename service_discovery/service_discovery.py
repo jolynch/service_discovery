@@ -16,6 +16,10 @@ class ServiceDiscovery(object):
     __lock = threading.RLock()
 
     @classmethod
+    def is_initialized(cls):
+        return cls.__initialized
+
+    @classmethod
     def init(cls):
         try:
             with cls.__lock:
@@ -26,6 +30,15 @@ class ServiceDiscovery(object):
         except Exception as exp:
             cls.__initialized = False
             raise ServiceDiscoveryInitError(exp)
+
+    @classmethod
+    def reset(cls):
+        try:
+            with cls.__lock:
+                cls.__initialized = False
+        except Exception as exp:
+            cls.__initialized = False
+            raise exp
 
     @classmethod
     def inject_service(cls, service_address):
