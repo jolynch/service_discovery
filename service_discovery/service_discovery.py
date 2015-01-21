@@ -5,46 +5,67 @@ from service_discovery.errors import (
     ServiceDiscoveryInitError, ServiceDiscoveryError
 )
 
+import threading
+
 
 class ServiceDiscovery(object):
-    PROVIDER_CLASSES = [EnvServiceProvider]
+    PROVIDERS = [(EnvServiceProvider, ())]
     INJECTOR_PROVIDER_INDEX = 0
 
     __initialized = False
+    __lock = threading.RLock()
+
+    @classmethod
+    def is_initialized(cls):
+        return cls.__initialized
 
     @classmethod
     def init(cls):
         try:
-            cls.providers = [provider() for provider in cls.PROVIDER_CLASSES]
-            cls.__initialized = True
+            with cls.__lock:
+                cls.providers = [
+                    provider(*args) for provider, args in cls.PROVIDERS
+                ]
+                cls.__initialized = True
         except Exception as exp:
             cls.__initialized = False
             raise ServiceDiscoveryInitError(exp)
 
     @classmethod
+    def reset(cls):
+        try:
+            with cls.__lock:
+                cls.__initialized = False
+        except Exception as exp:
+            cls.__initialized = False
+            raise exp
+
+    @classmethod
     def inject_service(cls, service_address):
         try:
-            if not cls.__initialized:
-                cls.init()
-            cls.providers[cls.INJECTOR_PROVIDER_INDEX].inject(
-                service_address
-            )
+            with cls.__lock:
+                if not cls.__initialized:
+                    cls.init()
+                cls.providers[cls.INJECTOR_PROVIDER_INDEX].inject(
+                    service_address
+                )
         except Exception as exp:
             raise ServiceDiscoveryError(exp)
 
     @classmethod
     def _query_providers(cls, service_name, method_name):
         try:
-            if not cls.__initialized:
-                cls.init()
-            for provider in cls.providers:
-                provider_response = getattr(provider, method_name)(
-                    service_name
-                )
-                print(provider_response)
-                if provider_response:
-                    return provider_response
-            raise Exception('Could not find {0}'.format(service_name))
+            with cls.__lock:
+                if not cls.__initialized:
+                    cls.init()
+                for provider in cls.providers:
+                    provider_response = getattr(provider, method_name)(
+                        service_name
+                    )
+                    print(provider_response)
+                    if provider_response:
+                        return provider_response
+                raise Exception('Could not find {0}'.format(service_name))
         except Exception as exp:
             raise ServiceDiscoveryError(exp)
 

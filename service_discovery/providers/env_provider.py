@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function, absolute_import, division
 from service_discovery.providers.base_provider import BaseServiceProvider
+from service_discovery.providers.base_provider import InjectableServiceProvider
+
 from service_discovery.service_address import ServiceAddress
 import os
 
 
-class EnvServiceProvider(BaseServiceProvider):
+class EnvServiceProvider(BaseServiceProvider, InjectableServiceProvider):
     """Provide services from the SERVICE_INJECT_MAP environment variable
 
     The map must look like:
